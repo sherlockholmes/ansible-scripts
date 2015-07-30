@@ -3,6 +3,8 @@
   vars:
     http_port: 80
     max_clients: 700
+  vars_files:
+    - secret
   remote_user: ec2-user
   sudo_user: root 
   sudo: yes
