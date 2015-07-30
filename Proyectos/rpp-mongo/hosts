@@ -1,1 +1,2 @@
-mongo ansible_ssh_host=10.0.3.46 ansible_ssh_port=22 ansible_sudo_pass=misol 
+mongo ansible_ssh_host=10.0.3.46 ansible_ssh_port=22 ansible_sudo_pass=misol   ansible_ssh_private_key_file=misol.pem
+rpp-nat-pre ansible_ssh_host=52.25.151.32 ansible_ssh_port=22 ansible_ssh_private_key_file=vp3-s01-nat.pem 
