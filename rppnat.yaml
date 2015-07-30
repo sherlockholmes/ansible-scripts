@@ -1,0 +1,22 @@
+---
+- hosts: rpp-nat-pre
+  remote_user: ec2-user
+  sudo_user: root
+  sudo: yes
+  tasks:
+ # - name: yum update
+ #   yum: name=* state=latest
+ # - name: install ansible docker-py and boto
+ #   pip: name=$item
+ #   with_items:
+ #   - ansible
+ #   - docker-py
+ #   - boto
+#  - name: install git
+#    yum: pkg=git state=latest
+#  - name: create /usr/local/scripts
+#    command: "mkdir /usr/local/scripts"
+  - name: cloning repo from aws.pe
+    command: "{{ item }} chdir=/usr/local/scripts"
+    with_items:
+    - git clone git@git.aws.pe:ansible.git -o origen -b mongo

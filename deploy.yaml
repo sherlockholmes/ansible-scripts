@@ -1,0 +1,15 @@
+- name: deploy instances 
+  hosts: 127.0.0.1
+  connection: local
+  tasks:
+  #- name: create security group 
+  #  command: aws ec2 create-security-group --group-name sg_web_urbania --description "SG Web Urbania"  
+  #- name: add rules 
+  #  command: "{{ item }}"
+  #  with_items:
+  #  - aws ec2 authorize-security-group-ingress --group-name sg_web_urbania --protocol tcp --port 22 --cidr 0.0.0.0/0 
+  #  - aws ec2 authorize-security-group-ingress --group-name sg_web_urbania --protocol tcp --port 80 --cidr 0.0.0.0/0 
+  #  - aws ec2 authorize-security-group-ingress --group-name sg_web_urbania --protocol tcp --port 8080 --cidr 0.0.0.0/0 
+  # - name: run instance 
+    #AMI Amazon Linux 2015-03 
+  #  command: aws ec2 run-instances --image-id ami-1ecae776  --instance-type t2.micro --key-name ansible-test --security-groups sg_web_urbania
