@@ -1,5 +1,5 @@
 ---
-- hosts: mongo
+- hosts: server01
   remote_user: ec2-user
   sudo_user: root 
   sudo: yes
