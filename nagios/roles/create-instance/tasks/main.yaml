@@ -1,49 +1,49 @@
-  - name: ec2 group VP4-S05-N01
+  - name: ec2 group nagios
     ec2_group:
-     name: VP4-S05-N01
+     name: nagios
      description: Prod:Nagios:Infraestructura
-     vpc_id: vpc-5d704e38
+     vpc_id: vpc-id
      region: us-east-1
      rules:
       - proto: tcp
         from_port: 80
         to_port: 80
-        cidr_ip: 190.117.227.245/32
+        cidr_ip: 0.0.0.0/32
       - proto: tcp
         from_port: 5666 
         to_port: 5666
         cidr_ip: 30.0.0.0/16
         from_port: 22
         to_port: 22
-        cidr_ip: 190.117.227.245/32
+        cidr_ip: 0.0.0.0/32
       - proto: icmp
         from_port: -1
         to_port: -1
-        cidr_ip: 190.117.227.245/32
+        cidr_ip: 0.0.0.0/32
       - proto: tcp
         from_port: 80
         to_port: 80
-        cidr_ip: 190.235.133.208/32
+        cidr_ip: 0.0.0.0/32
       - proto: tcp
         from_port: 22
         to_port: 22
-        cidr_ip: 190.235.133.208/32
+        cidr_ip: 0.0.0.0/32
       - proto: icmp
         from_port: -1
         to_port: -1
         cidr_ip: 190.235.133.208/32
   - name: run instance
     ec2:
-     key_name: VP4-S05-N01
+     key_name: nagios
      instance_type: t2.small
      image: ami-0d4cfd66
      wait: yes
-     group: VP4-S05-N01
+     group: nagios
      wait_timeout: 500
      count: 1
      vpc_subnet_id: subnet-c0673999
      instance_tags:
-       Name: VP4-S05-N01
+       Name: nagios
        Service: nagios
        Alias: v4s5n1
        Env: producion
