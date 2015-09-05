@@ -1,0 +1,16 @@
+- name: install pnp4
+  command: "{{ item }}"
+  args:
+   chdir: "/opt/nagios/pnp4nagios-0.6.25"
+  with_items:
+   - ./configure 
+   - make all
+   - make fullinstall
+   - mv /usr/local/pnp4nagios/share/install.php /usr/local/pnp4nagios/share/dummy
+   - chkconfig --add npcd
+   - chkconfig --level 35 npcd on
+- name: restart nagios
+  service: name=nagios state=restarted
+- name: restart httpd 
+  service: name=httpd state=restarted
+

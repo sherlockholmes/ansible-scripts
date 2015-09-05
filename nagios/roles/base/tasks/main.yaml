@@ -1,0 +1,86 @@
+--- 
+ - name: yum update
+   yum: name=* state=latest
+ - yum: name=epel-release state=latest
+ - name: install dependences
+   yum: pkg={{ item }} state=latest
+   with_items:
+    - vim
+    - wget
+    - httpd
+    - php
+    - gcc
+    - glibc-common
+    - gd
+    - gd-devel
+    - make
+    - net-snmp
+    - perl-Net-SSLeay
+    - perl-IO-Socket-SSL
+    - openssl-devel
+    - rrdtool
+    - perl-Time-HiRes
+    - rrdtool-perl
+    - php-gd
+    - xfsprogs
+    - mail
+    - gcc-c++
+    - kernel-devel
+    - xinetd
+    - mod_python
+    - postfix
+    - python-passlib
+ - name: create nagcmd group
+   group: name=nagcmd
+ - name: Add nagios User
+   user: name=nagios groups=nagcmd comment="Nagios Admin"
+ - name: add user apache to nagcmd group
+   user: groups=nagcmd name=apache
+ - name: mkdir /usr/local/nagios  
+   file: path=/usr/local/nagios state=directory owner=nagios group=nagcmd
+ - name: mkdir /mnt/xvdh
+   file: path=/mnt/xvdh state=directory
+ - name: format new volume
+   filesystem: fstype=xfs dev=/dev/xvdf
+ - name: edit fstab and mount the vol
+   mount: name=/usr/local/nagios src=/dev/xvdf opts=noatime fstype=xfs state=mounted  
+ - name: format new volume
+   filesystem: fstype=xfs dev=/dev/xvdh
+ - name: edit fstab and mount the vol
+   mount: name=/mnt/xvdh src=/dev/xvdh opts=noatime fstype=xfs state=mounted
+ - name: rsync logs
+   command: rsync -avz /var/log/ /mnt/xvdh/
+ - name: edit fstab and umount the vol
+   mount: name=/mnt/xvdh src=/dev/xvdh opts=noatime fstype=xfs state=unmounted
+ - name: edit fstab and mount the vol
+   mount: name=/var/log src=/dev/xvdh opts=noatime fstype=xfs state=mounted
+ - name: mkdir /opt/nagios
+   file: path=/opt/nagios state=directory
+ - name: download and uncompress nagios tarball
+   get_url: dest=/opt/nagios  url={{ item }}
+ 
+   with_items:
+    - http://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.1.0/nagios-4.1.0.tar.gz
+    - http://nagios-plugins.org/download/nagios-plugins-2.0.3.tar.gz
+    - http://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz
+    - https://mathias-kettner.de/download/check_mk-1.2.6p10.tar.gz
+    - http://downloads.sourceforge.net/project/pnp4nagios/PNP-0.6/pnp4nagios-0.6.25.tar.gz
+ - name:  uncompress nagios tarball
+   unarchive: src={{ item }} dest=/opt/nagios/ copy=no
+   with_items:
+    - /opt/nagios/nagios-4.1.0.tar.gz
+    - /opt/nagios/nagios-plugins-2.0.3.tar.gz
+    - /opt/nagios/nrpe-2.15.tar.gz
+    - /opt/nagios/check_mk-1.2.6p10.tar.gz
+    - /opt/nagios/pnp4nagios-0.6.25.tar.gz
+ - name: restart machine
+   command: shutdown -r now "Ansible updates triggered"
+   async: 0
+   poll: 0
+   ignore_errors: true
+ - name: waiting for server to come back
+   local_action: wait_for host=tag_service_nagios state=started
+   sudo: false
+ - name: Wait for checks
+   pause: minutes=1
+ 

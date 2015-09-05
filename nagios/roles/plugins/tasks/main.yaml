@@ -1,0 +1,12 @@
+- name: install plugins
+  command: "{{ item }}"
+  args:
+   chdir: "/opt/nagios/nagios-plugins-2.0.3"
+  with_items:
+   - ./configure --with-nagios-user=nagios
+   - make 
+   - make install
+   - chown -R nagios:nagios /usr/local/nagios/libexec
+- name: restart nagios
+  service: name=nagios state=restarted
+

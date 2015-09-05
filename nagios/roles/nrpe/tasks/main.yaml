@@ -1,0 +1,11 @@
+- name: install nrpe
+  command: "{{ item }}"
+  args:
+   chdir: "/opt/nagios/nrpe-2.15"
+  with_items:
+   - ./configure 
+   - make all
+   - make install-plugin
+- name: restart nagios
+  service: name=nagios state=restarted
+

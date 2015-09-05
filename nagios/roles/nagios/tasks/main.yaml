@@ -1,0 +1,20 @@
+- name: install nagios
+  command: "{{ item }}" 
+  args:
+   chdir: "/opt/nagios/nagios-4.1.0"
+  with_items:
+   - ./configure --with-command-group=nagcmd
+   - make all
+   - make install
+   - make install-init
+   - make install-config
+   - make install-commandmode
+   - make install-webconf
+   - make install-exfoliation
+   - cp -R contrib/eventhandlers/ /usr/local/nagios/libexec/
+   - chown -R nagios:nagios /usr/local/nagios/libexec/eventhandlers
+   - /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+- name: add password for basic auth to nagiosadmin user
+  htpasswd: path=/etc/nginx/passwdfile name=nagiosadmin password=esparta2015 
+- name: start nagios
+  service: name=nagios state=started

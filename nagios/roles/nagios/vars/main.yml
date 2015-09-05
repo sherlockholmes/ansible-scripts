@@ -1,0 +1,6 @@
+nagios-url: http://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.1.0/nagios-4.1.0.tar.gz
+plugins-url: http://nagios-plugins.org/download/nagios-plugins-2.0.3.tar.gz
+nrpe-url: http://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz
+checkmk-url: https://mathias-kettner.de/download/check_mk-1.2.6p10.tar.gz
+pnp4-url: http://downloads.sourceforge.net/project/pnp4nagios/PNP-0.6/pnp4nagios-0.6.25.tar.gz
+

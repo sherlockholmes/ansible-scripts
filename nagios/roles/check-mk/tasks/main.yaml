@@ -1,0 +1,28 @@
+- name: install check_mk
+  command: "{{ item }}"
+  args:
+   chdir: "/opt/nagios/check_mk-1.2.6p10"
+  with_items:
+   - ./setup.sh --yes
+   - check_mk -O
+   - chmod u+s /bin/ping
+   - mkdir -p /var/log/nagios/rw
+   - chown -R nagios:nagcmd /var/log/nagios
+- name: urbania configuration nagios
+  template: src=../templates/nagios.cfg dest=/usr/local/nagios/etc/nagios.cfg
+- name: urbania configuration commands
+  template: src=../templates/commands.cfg dest=/usr/local/nagios/etc/objects/commands.cfg
+- name: urbania configuration templates
+  template: src=../templates/templates.cfg dest=/usr/local/nagios/etc/objects/templates.cfg
+- name: urbania configuration localhost
+  template: src=../templates/localhost.cfg dest=/usr/local/nagios/etc/objects/localhost.cfg
+- name: urbania configuration contacts
+  template: src=../templates/contacts.cfg dest=/usr/local/nagios/etc/objects/contacts.cfg
+- name: start nagios
+  service: name=nagios state=started
+- name: restart npcd
+  service: name=npcd state=restarted
+- name: restart httpd
+  service: name=httpd state=restarted
+
+
