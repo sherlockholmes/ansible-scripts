@@ -1,0 +1,41 @@
+# Global parameters
+##
+
+# Cluster name
+site_name: awsbi
+
+# IPv4 maximum transmission unit, 9216 is the maximum for Intel/Cisco hardware
+mtu: 9216
+
+# Custom configuration
+# This will install additionnal services, update files
+with_elasticsearch: True
+update_iptables: False
+update_hosts: True
+install_oracle_jdk: True
+with_ganglia: True
+
+# For iptable - hosts ip range
+ip_range: 10.0.13.1-10.0.3.255
+
+hadoop:
+  dfs_dir_parent: /data/hadoop
+  dfs_dir_nn: /nn
+  dfs_dir_jn: /jn
+  dfs_dir_dn: [ /data/hadoop/dn, /data01/hadoop/dn, /data02/hadoop/dn ]
+
+spark:
+  version: 1.4.1
+  workermemory: 16g
+  drivermemory: 3g
+  daemonmemory: 1g
+  location: /usr/lib/spark
+  webui: 8080
+
+nginx:
+  workers: "{{ hostvars[inventory_hostname].ansible_processor_count }}"
+
+elasticsearch:
+  version: 1.4.1
+  data: /data1/elasticsearch
+  logs: /data1/log

@@ -1,0 +1,17 @@
+---
+# ganglia daemon
+
+- name: install Ganglia meta deamon and rrdtool via YUM
+  shell: rpm -Uvh {{ item }}
+  with_items:
+     - http://vuksan.com/centos/RPMS-6/x86_64/ganglia-gmetad-3.6.0-1.x86_64.rpm
+  tags: ganglia
+  ignore_errors: yes
+  when: with_ganglia
+
+- name: configure gmetad.conf in /etc/ganglia/gmetad.conf
+  template: src=gmetad.conf dest=/etc/ganglia/gmetad.conf owner=root group=root mode=0644
+  tags: ganglia
+  when: with_ganglia
+  notify:
+    - restart ganglia-gmetad

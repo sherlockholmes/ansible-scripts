@@ -1,0 +1,44 @@
+# Hadoop Nodes
+# ============
+
+[zookeepers]
+10.0.3.205 zookeeper_id=1
+10.0.3.164 zookeeper_id=2
+10.0.3.146 zookeeper_id=3
+
+# HADDOP DEPLOYMENT
+# =================
+
+[journalnodes]
+10.0.3.205
+10.0.3.164
+10.0.3.146
+
+[namenodes]
+10.0.3.205
+10.0.3.164
+
+[datanodes]
+10.0.3.101
+
+
+# ELASTICSEARCH
+# =============
+
+[elasticsearch]
+10.0.3.101
+
+# SPARK
+# =====
+[sparkworkers]
+10.0.3.101
+
+
+[sparkmasters]
+10.0.3.205
+10.0.3.164
+
+# Monitoring
+# ==========
+[monitor]
+10.0.3.146

@@ -1,0 +1,38 @@
+---
+# file: roles/elasticsearch/tasks/main.yml
+
+- name: install Elasticsearch
+  shell: creates=/usr/share/elasticsearch/bin/elasticsearch chdir=/tmp wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-{{ elasticsearch.version }}.noarch.rpm && rpm -Uvh /tmp/elasticsearch-{{ elasticsearch.version }}.noarch.rpm
+  tags:
+    - elasticsearch
+    - slaves
+
+- name: create elasticsearch data folder
+  file: path={{ elasticsearch.data  }} owner=elasticsearch state=directory
+  tags:
+    - elasticsearch
+    - slaves
+
+- name: create elasticsearch logs folder
+  file: path={{ elasticsearch.logs  }} owner=elasticsearch state=directory
+  tags:
+    - elasticsearch
+    - slaves
+
+- name: create default configuration
+  template: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
+  tags:
+    - elasticsearch
+    - slaves  
+
+- name: make sure Elasticsearch is enabled and started
+  service: name=elasticsearch enabled=yes state=started
+  tags:
+    - elasticsearch
+    - slaves
+
+#- name: install plugin head
+#  command: chdir=/usr/share/elasticsearch/bin ./plugin -install mobz/elasticsearch-head
+#  tags:
+#    - elasticsearch
+#    - slaves

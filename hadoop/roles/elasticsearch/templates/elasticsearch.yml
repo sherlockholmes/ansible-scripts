@@ -1,0 +1,12 @@
+node.name: "{{inventory_hostname}}"
+cluster.name: {{site_name}}
+
+path.data: {{ elasticsearch.data }}
+
+discovery.zen.minimum_master_nodes: {% for host in groups['elasticsearch'] %}{% if loop.last %}{{ loop.index }}{% endif %}{% endfor %}
+
+discovery.zen.ping.multicast.enabled: false
+
+{% set flag=0 %}
+
+discovery.zen.ping.unicast.hosts: [{% for host in groups['elasticsearch'] %}{% if inventory_hostname != host %}{% if not loop.first and flag == 1 %},{% else %} {% set flag=1 %}{% endif %}"{{ host }}"{% endif %}{% endfor %}]

@@ -1,0 +1,23 @@
+
+roles/common/files/dependencies/jdk-7u67-linux-x64.rpm
+roles/spark_configuration/files/spark-1.1.0-bin-cdh4.tgz
+
+# Mac OSx shit
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+.elc
+auto-save-list
+tramp
+.\#*

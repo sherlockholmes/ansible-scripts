@@ -1,0 +1,21 @@
+---
+# file: roles/spark/tasks/main.yml
+
+- name: create spark directory
+  file: path={{ item }} state=directory
+  with_items: spark.location
+  tags:
+    - spark
+    - slaves
+
+- name: Download Apache Spark
+  shell: chdir=/tmp wget http://apache.mirror.cdnetworks.com/spark/spark-{{ spark.version }}/spark-{{ spark.version }}-bin-cdh4.tgz && tar zxvf /tmp/spark-{{ spark.version }}-bin-cdh4.tgz && yes | cp -rf /tmp/spark-{{ spark.version }}-bin-cdh4/* {{ spark.location }}
+  tags:
+    - spark
+    - slaves
+
+- name: copy spark-env.sh
+  template: src=spark-env.sh dest={{ spark.location }}/conf/spark-env.sh
+  tags:
+    - spark
+    - slaves

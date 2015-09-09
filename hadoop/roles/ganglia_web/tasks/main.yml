@@ -1,0 +1,38 @@
+---
+#
+
+- name: Install Ganglia web dependencies via yum
+  yum: name={{ item }}
+  with_items:
+    - make
+    - php-mcrypt
+    - rsync
+  tags: ganglia
+  when: with_ganglia
+  notify: restart ganglia-gmetad
+
+- name: Download ganglia web
+  shell: creates=/tmp/ganglia chdir=/tmp wget http://heanet.dl.sourceforge.net/project/ganglia/ganglia-web/3.6.2/ganglia-web-3.6.2.tar.gz && tar zxvf ganglia-web-3.6.2.tar.gz  && mv ganglia-web-3.6.2 ganglia
+  tags: ganglia
+  when: with_ganglia
+
+- name: Update ganglia makefile
+  template: src=Makefile dest=/tmp/ganglia
+  tags: ganglia
+  when: with_ganglia
+
+- name: uncomment date.timezone in php.ini
+  shell: sed -i "s/^;date.timezone =$/date.timezone = \"US\/Central\"/" /etc/php.ini
+  tags: ganglia
+  when: with_ganglia
+
+- name: make install ganglia-web
+  command: creates=/usr/share/ganglia chdir=/tmp/ganglia make install
+  notify: restart php-fpm
+  tags: ganglia
+  when: with_ganglia
+
+#- name: Create synbolic link
+#  shell: ln -s /var/lib64/ganglia-web/ /var/lib/ganglia-web
+#  tags: ganglia
+#  when: with_ganglia
