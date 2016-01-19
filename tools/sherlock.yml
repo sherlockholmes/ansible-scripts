@@ -1,0 +1,10 @@
+---
+- name: Sherlock Investigate
+  host: all
+  gather_facts: false
+  pre_tasks:
+
+  	- name: Name fo
+  	  sudo: yes
+  	  setup: filter={{ f|default(omit)}}
+  	  tags: [ 'gather', 'tmi']

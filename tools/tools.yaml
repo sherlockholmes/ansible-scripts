@@ -1,0 +1,21 @@
+---
+- hosts: local 
+  sudo: true
+  remote_user: vagrant
+  gather_facts: false
+  vars_prompt:
+    - name: x
+      promt: "Input word to search:"
+      private: false
+  tasks:
+    - name: Find word in logs.
+      shell: grep {{ x }} /var/log/{{ item }}
+      with_items: 
+        - nginx/access.log
+        - apache/access.log
+        - tomcat7/catalina.out
+      register: whatifound
+      tags: grep
+
+    - debug: var=whatifound
+      tags: grep
