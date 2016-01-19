@@ -1,0 +1,22 @@
+---
+- hosts: server01
+  remote_user: ec2-user
+  sudo_user: root 
+  sudo: yes
+  tasks:
+  - name: yum update 
+    yum: name=* state=latest
+  - name: install epel 
+    yum: pkg=epel-release state=latest
+  - name: add mongo repository 
+    template: src=mongodb/mongodb-org-3.0.repo dest=/etc/yum.repos.d/mongodb-org-3.0.repo
+  - name: install mongodb-org 
+    yum: pkg=mongodb-org state=latest
+  - name: remove mmv1 files
+    command: "{{ item }} chdir=/var/lib/mongo"
+    with_items:
+    - rm -rf *
+  - name: configuration mongod
+    template: src=mongod/mongod.conf dest=/etc/mongod.conf
+  - name: ensure mongo is running (and enable it at boot)
+    service: name=mongod state=restarted enabled=yes
